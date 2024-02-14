@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
   import App from './App.svelte';
+  import MultiSelect from 'svelte-multiselect'
 
   export let data;
 
@@ -12,9 +13,8 @@
   const marginBottom = 30;
   const marginLeft = 60;
   
-  
-  
-  let states = [];
+  const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Mariana Islands", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virgin Islands", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+  let selected = ["California"];
   let svg;
   let gx;
   let gy;
@@ -37,11 +37,14 @@
     .x((d) => x(d.date))
     .y((d) => y(d.permit));
 
+  $: filtered = data.filter(function(d){ return selected.includes(d.state) })
+
   $: dataByStates = d3.group(
-      data, 
+      filtered, 
       d => d.state
     );
-
+  
+  
   $: path = d3.select(svg).append("g")
       .attr("fill", "none")
       .attr("stroke", "steelblue")
@@ -66,7 +69,7 @@
         .attr('x2', width - marginRight - marginLeft)
         .attr('stroke-opacity', (d) => (d === 0 ? 1 : 0.1)),
     );
-  $: points = data.map((d) => [x(d.date), y(d.permit), d.state]);
+  $: points = filtered.map((d) => [x(d.date), y(d.permit), d.state]);
 
   $: dot = d3.select(svg).append("g")
       .attr("display", "none");
@@ -95,7 +98,7 @@
     path.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
     dot.attr("transform", `translate(${x},${y})`);
     dot.select("text").text(k);
-    d3.select(svg).property("value", data[i]).dispatch("input", {bubbles: true});
+    d3.select(svg).property("value", filtered[i]).dispatch("input", {bubbles: true});
   }
 
   function pointerentered() {
@@ -110,26 +113,10 @@
     d3.select(svg).dispatch("input", {bubbles: true});
   }
 
-  function onSubmit(e) {
-    const formData = new FormData(e.target);
-
-    states = [];
-    for (let field of formData) {
-      const [key, value] = field;
-      states.push(value);
-    }
-  }
 </script>
 
-<style>
-  .state-checkboxes {
-    column-count: 2;
-    column-gap: 20px; /* Adjust the gap to your liking */
-  }
-</style>
-
 <h1>Permits Per State Over Time</h1>
-<div style="display: flex">
+<MultiSelect bind:selected options={states}/>
 <div class="graph">
     <svg
         bind:this={svg}
@@ -152,12 +139,4 @@
         </text>
       </g>
     </svg>
-</div>
-<form on:submit|preventDefault={onSubmit} class="state-checkboxes">
-  {#each dataByStates.keys() as key}
-  <input type="checkbox" id={key} name={key} value={key} checked>
-  <label for=key>{key}</label><br>
-  {/each}
-  <input type="submit" value="Submit">
-</form>
 </div>
