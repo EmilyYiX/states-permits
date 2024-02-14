@@ -113,10 +113,56 @@
     d3.select(svg).dispatch("input", {bubbles: true});
   }
 
+  function redraw() {
+  // Clear the SVG content
+  d3.select(svg).selectAll("*").remove();
+
+  // Recreate the axes groups to avoid removal on redraw
+  d3.select(svg).append("g").attr("transform", `translate(0, ${height - marginBottom})`).attr("class", "x-axis");
+  d3.select(svg).append("g").attr("transform", `translate(${marginLeft}, 0)`).attr("class", "y-axis");
+
+  // Redraw the axes
+  d3.select('.x-axis').call(d3.axisBottom(x).ticks(width / 80));
+  d3.select('.y-axis').call(d3.axisLeft(y));
+
+  // Filter the data based on the current selection and redraw the lines
+  const filtered = data.filter(d => selected.includes(d.state));
+  const dataByStates = d3.group(filtered, d => d.state);
+
+  d3.select(svg).append('g')
+    .attr('class', 'grid')
+    .attr('transform', `translate(${marginLeft},0)`)
+    .call(d3.axisLeft(y)
+      .tickSize(-width + marginLeft + marginRight)
+      .tickFormat(''))
+    .selectAll('.tick line')
+    .style('stroke', '#eee')
+    .style('stroke-opacity', 0.7);
+
+    
+  // Draw lines
+  d3.select(svg)
+    .selectAll("path")
+    .data(Array.from(dataByStates.values()), d => d[0].state)
+    .join("path")
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("d", line)
+      .style("mix-blend-mode", "multiply");
+  }
+
+  function handleRemove(event) {
+    selected = selected.filter(item => item !== event.detail);
+    redraw();
+  }
+
 </script>
 
 <h1>Permits Per State Over Time</h1>
-<MultiSelect bind:selected options={states}/>
+<MultiSelect bind:selected options={states} on:remove={handleRemove} />
 <div class="graph">
     <svg
         bind:this={svg}
