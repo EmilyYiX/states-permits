@@ -88,18 +88,46 @@
       .on("touchstart", event => event.preventDefault());
 
 
-  function pointermoved(event) {
-    const [xm, ym] = d3.pointer(event);
-    const i = d3.leastIndex(points, ([x, y]) => Math.hypot(x - xm, y - ym));
-    if(!points[i]){
-      return;
-    }
-    const [x, y, k] = points[i];
-    path.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
-    dot.attr("transform", `translate(${x},${y})`);
-    dot.select("text").text(k);
-    d3.select(svg).property("value", filtered[i]).dispatch("input", {bubbles: true});
+const formatDate = d3.timeFormat("%Y");
+const formatPermit = d3.format(",");
+
+// Modify the pointermoved function
+function pointermoved(event) {
+  const [xm, ym] = d3.pointer(event, this); // Get the mouse position relative to the SVG element
+  let hoveredState = null;
+  let closestDistance = Infinity;
+  let closestPoint = null;
+
+  // Find the closest point by looping over each state's data
+  for (const [state, points] of dataByStates) {
+    points.forEach(point => {
+      const xCoord = x(point.date);
+      const yCoord = y(point.permit);
+      const distance = Math.sqrt((xm - xCoord) ** 2 + (ym - yCoord) ** 2);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        hoveredState = state;
+        closestPoint = point;
+      }
+    });
   }
+
+  if (closestPoint) {
+    const xCoord = x(closestPoint.date);
+    const yCoord = y(closestPoint.permit);
+    dot.attr("transform", `translate(${xCoord},${yCoord})`);
+    dot.select("text").text(`${hoveredState} (${formatDate(closestPoint.date)}, ${formatPermit(closestPoint.permit)})`);
+    dot.attr("display", null);
+
+    // Highlight the hovered line
+    path.style("stroke", d => d[0].state === hoveredState ? "tomato" : "#ddd")
+        .style("stroke-width", d => d[0].state === hoveredState ? 3 : 1);
+  } else {
+    // If no close point is found, hide the dot and reset the lines
+    dot.attr("display", "none");
+    path.style("stroke", "steelblue").style("stroke-width", 1.5);
+  }
+}
 
   function pointerentered() {
     path.style("mix-blend-mode", null).style("stroke", "#ddd");
@@ -114,48 +142,39 @@
   }
 
   function redraw() {
-  // Clear the SVG content
-  d3.select(svg).selectAll("*").remove();
+  // Assuming dataByStates is correctly updated before this function is called
 
-  // Recreate the axes groups to avoid removal on redraw
-  d3.select(svg).append("g").attr("transform", `translate(0, ${height - marginBottom})`).attr("class", "x-axis");
-  d3.select(svg).append("g").attr("transform", `translate(${marginLeft}, 0)`).attr("class", "y-axis");
+  // Bind the updated data to the paths
+  const paths = d3.select(svg).selectAll("path")
+    .data(Array.from(dataByStates.values()).filter(d => d && d.length > 0), d => d ? d[0].state : '');
 
-  // Redraw the axes
-  d3.select('.x-axis').call(d3.axisBottom(x).ticks(width / 80));
-  d3.select('.y-axis').call(d3.axisLeft(y));
-
-  // Filter the data based on the current selection and redraw the lines
-  const filtered = data.filter(d => selected.includes(d.state));
-  const dataByStates = d3.group(filtered, d => d.state);
-
-  d3.select(svg).append('g')
-    .attr('class', 'grid')
-    .attr('transform', `translate(${marginLeft},0)`)
-    .call(d3.axisLeft(y)
-      .tickSize(-width + marginLeft + marginRight)
-      .tickFormat(''))
-    .selectAll('.tick line')
-    .style('stroke', '#eee')
-    .style('stroke-opacity', 0.7);
-
-    
-  // Draw lines
-  d3.select(svg)
-    .selectAll("path")
-    .data(Array.from(dataByStates.values()), d => d[0].state)
-    .join("path")
+  // Enter + Update
+  paths.enter()
+    .append("path")
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-width", 1.5)
       .attr("stroke-linejoin", "round")
       .attr("stroke-linecap", "round")
       .attr("d", line)
+      .merge(paths) // Merges the enter and update selections
       .style("mix-blend-mode", "multiply");
-  }
+
+  // Exit
+  paths.exit().remove();
+}
 
   function handleRemove(event) {
-    selected = selected.filter(item => item !== event.detail);
+    const stateToRemove = event.detail; // Get the state to remove from the event details
+
+    // Update selected states
+    selected = selected.filter(item => item !== stateToRemove);
+
+    // Update the dataByStates with the new selection
+    const filtered = data.filter(d => selected.includes(d.state));
+    dataByStates = d3.group(filtered, d => d.state);
+
+    // Redraw the graph with updated data
     redraw();
   }
 
