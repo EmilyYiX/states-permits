@@ -228,8 +228,28 @@ onMount(() => {
     </svg>
 </div>
 <div class="write-up">
-  <p>We decided to use a line chart because we are looking at a change over time, and a line chart is a good way to illustrate this since the line shows a trend. A possible alternative would be to use a bar chart, with each category being a state, and being able to change the height of the bars by using a year slider. Another alternative would be to use a scatter chart with a similar year slider as the bar chart, and the x-axis could be states sorted by political affiliation or another simliar value.</p>
-  <p>Emily set up the Svelte project and the basic line chart. It took a lot of time to set up the Svelte project because I did it before the template was posted on EdStem to use. I think it took about 5 hours for me to get a GitHub pages site set up initially. Housheng participated in and optimized the interactive functionality of visualization proposed by Emily, and designed the functionality of mouseover on lines that shows more information for each state. shows more information for each state. During this process, in order to solve the problem that the active function only draw plots but cannot clean any of them, Housheng spent a lot of time on designing a suitable redraw function and solving the related debugging problems, which took about 6hrs in total. <em>(Guys, write what you did here!)</em></p>
+  <h1>Writeup</h1>
+  <p>
+    This interactive data visualization enables users to explore and compare the trends of gun permit issuance across all states of USA over a period of more than two decades. The visualization was constructed using <span class="highlight">Svelte</span> and <span class="highlight">D3.js</span>
+  </p>
+  
+  <h2>Rationale for Design Decisions</h2>
+  <p>
+    Our design decisions were guided by the goal to provide a clear and comparative view. A multi-line chart was chosen for its representation of time series data, which helps in learning trends over time. The distinct lines for each state allow for quick visual differentiation and comparison.
+  </p>
+  <p>
+    A hover tooltip was implemented to provided detailed information: as the state name, year, and number of permits issued. Looking at the data values and the possibility of having multiple lines at once on the graph, we decided to make the hovered line bold and turn red. This was done to help focus on the state that the user wants to examine and compare with other states on the graph.
+  <p>
+    The multi-select feature allows users to customize the data displayed by selecting all or either a subset of the states that the user wants to visualize. This approach was favored over checkboxes, as we thought it is easier to type in or select a state in a search bar than going through a long list of checkboxes and clicking of small boxes to choose or remove.
+  </p>
+  
+  <h2>Considered Alternatives</h2>
+  <p>
+    We considered various alternatives for visual encodings, including area and stacked line charts. However, we decided against these to prevent individual state data visualization or a subset of states,. Our priority was to maintain the clarity of individual state trends while allowing for comparisons with other states.
+  </p>
+
+  <h2>Contributions</h2>
+  <p>Emily set up the Svelte project and the basic line chart. It took a lot of time to set up the Svelte project because I did it before the template was posted on EdStem to use. I think it took about 5 hours for me to get a GitHub pages site set up initially. Housheng participated in and optimized the interactive functionality of visualization proposed by Emily, and designed the functionality of mouseover on lines that shows more information for each state. shows more information for each state. During this process, in order to solve the problem that the active function only draw plots but cannot clean any of them, Housheng spent a lot of time on designing a suitable redraw function and solving the related debugging problems, which took about 6hrs in total. Siddhant was tasked with doing the write up and a zoom functionality. However, I could not completely implement the zoom functionality for the visualization. Attempting the zoom functionality took about 4 hours but could not be presented for the submission. Siddhant then added some CSS styling for the svg, styling for the tooltip, and fixed bugs with axis, axis labels, and axis ticks. This took about 1.5 hours</p>
 </div>
 
 <style>
