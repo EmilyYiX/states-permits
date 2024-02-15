@@ -173,9 +173,7 @@ function pointermoved(event) {
     paths.exit().remove();
   }
 
-  function handleRemove(event) {
-    const stateToRemove = event.detail; // Get the state to remove from the event details
-
+  function removeState(stateToRemove) {
     // Update selected states
     selected = selected.filter(item => item !== stateToRemove);
 
@@ -186,6 +184,16 @@ function pointermoved(event) {
     // Redraw the graph with updated data
     redraw();
   }
+
+  function handleRemove(event) {
+    const stateToRemove = event.detail; // Get the state to remove from the event details
+    removeState(stateToRemove)
+  }
+
+  function handleRemoveAll(event) {
+    event.detail.options.forEach((stateToRemove) => removeState(stateToRemove));
+  }
+  
 onMount(() => {
   // Existing setup for drawing the chart goes here...
 
@@ -202,7 +210,7 @@ onMount(() => {
 </script>
 
 <h1>Permits Per State Over Time</h1>
-<MultiSelect bind:selected options={states} on:remove={handleRemove} />
+<MultiSelect bind:selected options={states} on:remove={handleRemove} on:removeAll={handleRemoveAll} />
 <div class="graph">
     <svg
         bind:this={svg}
