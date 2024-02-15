@@ -44,7 +44,6 @@
       d => d.state
     );
   
-  
   $: path = d3.select(svg).append("g")
       .attr("fill", "none")
       .attr("stroke", "steelblue")
@@ -136,6 +135,7 @@ function pointermoved(event) {
 
   function pointerleft() {
     path.style("mix-blend-mode", "multiply").style("stroke", null);
+    path.style("stroke", "steelblue").style("stroke-width", 1.5);
     dot.attr("display", "none");
     d3.select(svg).node().value = null;
     d3.select(svg).dispatch("input", {bubbles: true});
@@ -193,7 +193,7 @@ function pointermoved(event) {
   function handleRemoveAll(event) {
     event.detail.options.forEach((stateToRemove) => removeState(stateToRemove));
   }
-  
+
 onMount(() => {
   // Existing setup for drawing the chart goes here...
 
