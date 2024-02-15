@@ -230,3 +230,47 @@ onMount(() => {
   <p>We decided to use a line chart because we are looking at a change over time, and a line chart is a good way to illustrate this since the line shows a trend. A possible alternative would be to use a bar chart, with each category being a state, and being able to change the height of the bars by using a year slider. Another alternative would be to use a scatter chart with a similar year slider as the bar chart, and the x-axis could be states sorted by political affiliation or another simliar value.</p>
   <p>Emily set up the Svelte project and the basic line chart. It took a lot of time to set up the Svelte project because I did it before the template was posted on EdStem to use. I think it took about 5 hours for me to get a GitHub pages site set up initially. <em>(Guys, write what you did here!)</em></p>
 </div>
+
+<style>
+  svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+path.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2;
+  transition: all 0.3s ease-out;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #ccc;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 12px sans-serif;
+  color: #666;
+}
+
+.axis .domain {
+  stroke: none;
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: auto;
+  padding: 8px;
+  font: 12px sans-serif;
+  background: rgba(255, 255, 255, 0.8);
+  border: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+</style>
