@@ -205,3 +205,7 @@ function pointermoved(event) {
       </g>
     </svg>
 </div>
+<div class="write-up">
+  <p>We decided to use a line chart because we are looking at a change over time, and a line chart is a good way to illustrate this since the line shows a trend. A possible alternative would be to use a bar chart, with each category being a state, and being able to change the height of the bars by using a year slider. Another alternative would be to use a scatter chart with a similar year slider as the bar chart, and the x-axis could be states sorted by political affiliation or another simliar value.</p>
+  <p>Emily set up the Svelte project and the basic line chart. It took a lot of time to set up the Svelte project because I did it before the template was posted on EdStem to use. I think it took about 5 hours for me to get a GitHub pages site set up initially. <em>(Guys, write what you did here!)</em></p>
+</div>
