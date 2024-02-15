@@ -1,3 +1,9 @@
+<svelte:head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+</svelte:head>
+
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
@@ -204,6 +210,7 @@ onMount(() => {
     .attr("text-anchor", "end") // Anchor the text at the end for right alignment
     .attr("x", width - marginRight- 700) // Position horizontally at the right edge of the SVG, considering the margin
     .attr("y", height) // Position vertically just above the bottom of the SVG, adjust as needed
+    .attr("font-family", function(d,i) {return i<5 ? "Open Sans" : "sans-serif"; })
     .text("Year"); // Set the text for the label
 });
 
@@ -259,45 +266,48 @@ onMount(() => {
 </div>
 
 <style>
+  h1, h2, p, svg {
+    font-family: "Open Sans", sans-serif;
+  }
   svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto;
-}
-path.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2;
-  transition: all 0.3s ease-out;
-}
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #ccc;
-  shape-rendering: crispEdges;
-}
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  path.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2;
+    transition: all 0.3s ease-out;
+  }
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #ccc;
+    shape-rendering: crispEdges;
+  }
 
-.axis text {
-  font: 12px sans-serif;
-  color: #666;
-}
+  .axis text {
+    font-family: "Open Sans", sans-serif;
+    color: #666;
+  }
 
-.axis .domain {
-  stroke: none;
-}
+  .axis .domain {
+    stroke: none;
+  }
 
-div.tooltip {
-  position: absolute;
-  text-align: center;
-  width: auto;
-  padding: 8px;
-  font: 12px sans-serif;
-  background: rgba(255, 255, 255, 0.8);
-  border: 0;
-  border-radius: 8px;
-  pointer-events: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
+  div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    padding: 8px;
+    font-family: "Open Sans", sans-serif;
+    background: rgba(255, 255, 255, 0.8);
+    border: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
 
 </style>
