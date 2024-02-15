@@ -6,7 +6,7 @@
 
   export let data;
 
-  const width = 928;
+  const width = 1528;
   const height = 600;
   const marginTop = 20;
   const marginRight = 30;
@@ -14,7 +14,7 @@
   const marginLeft = 60;
   
   const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Mariana Islands", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virgin Islands", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
-  let selected = ["California"];
+  let selected = ["California", "Illinois", "North Carolina"];
   let svg;
   let gx;
   let gy;
