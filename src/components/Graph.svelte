@@ -194,7 +194,7 @@ onMount(() => {
     .append("text") // Append a new text element
     .attr("class", "x-axis-label") // Optional: Assign a class for styling
     .attr("text-anchor", "end") // Anchor the text at the end for right alignment
-    .attr("x", width - marginRight+10) // Position horizontally at the right edge of the SVG, considering the margin
+    .attr("x", width - marginRight- 700) // Position horizontally at the right edge of the SVG, considering the margin
     .attr("y", height) // Position vertically just above the bottom of the SVG, adjust as needed
     .text("Year"); // Set the text for the label
 });
@@ -220,6 +220,7 @@ onMount(() => {
           fill="#000"
           font-weight="bold"
           text-anchor="start"
+          font-size=15px
         >
           Permits
         </text>
