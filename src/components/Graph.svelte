@@ -142,27 +142,36 @@ function pointermoved(event) {
   }
 
   function redraw() {
-  // Assuming dataByStates is correctly updated before this function is called
+    const verticalLineClass = 'vertical-line';
 
-  // Bind the updated data to the paths
-  const paths = d3.select(svg).selectAll("path")
-    .data(Array.from(dataByStates.values()).filter(d => d && d.length > 0), d => d ? d[0].state : '');
+    if (d3.select(svg).select("." + verticalLineClass).empty()) {
+      d3.select(svg)
+        .append("line") 
+        .attr("class", verticalLineClass)
+        .attr("x1", marginLeft) 
+        .attr("y1", marginBottom-10) 
+        .attr("x2", marginLeft) 
+        .attr("y2", height-30) 
+        .attr("stroke", "black") 
+        .attr("stroke-width", 1); 
+    }
+    const paths = d3.select(svg).selectAll("path")
+      .data(Array.from(dataByStates.values()).filter(d => d && d.length > 0), d => d ? d[0].state : '');
 
-  // Enter + Update
-  paths.enter()
-    .append("path")
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
-      .attr("stroke-linejoin", "round")
-      .attr("stroke-linecap", "round")
-      .attr("d", line)
-      .merge(paths) // Merges the enter and update selections
-      .style("mix-blend-mode", "multiply");
+    // Enter + Update
+    paths.enter()
+      .append("path")
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 1.5)
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("d", line)
+        .merge(paths) // Merges the enter and update selections
+        .style("mix-blend-mode", "multiply");
 
-  // Exit
-  paths.exit().remove();
-}
+    paths.exit().remove();
+  }
 
   function handleRemove(event) {
     const stateToRemove = event.detail; // Get the state to remove from the event details
@@ -177,6 +186,18 @@ function pointermoved(event) {
     // Redraw the graph with updated data
     redraw();
   }
+onMount(() => {
+  // Existing setup for drawing the chart goes here...
+
+  // Append a text element for the x-axis label positioned at the rightmost part
+  d3.select(svg)
+    .append("text") // Append a new text element
+    .attr("class", "x-axis-label") // Optional: Assign a class for styling
+    .attr("text-anchor", "end") // Anchor the text at the end for right alignment
+    .attr("x", width - marginRight+10) // Position horizontally at the right edge of the SVG, considering the margin
+    .attr("y", height) // Position vertically just above the bottom of the SVG, adjust as needed
+    .text("Year"); // Set the text for the label
+});
 
 </script>
 
