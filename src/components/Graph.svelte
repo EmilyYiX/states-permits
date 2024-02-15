@@ -242,8 +242,6 @@ onMount(() => {
   <p>
     The multi-select feature allows users to customize the data displayed by selecting all or either a subset of the states that the user wants to visualize. This approach was favored over checkboxes, as we thought it is easier to type in or select a state in a search bar than going through a long list of checkboxes and clicking of small boxes to choose or remove. The multiselct bar shows all the states in alphabetical order and when selected shows them side by side on the bar itself with a remove option on it. This bar also has a clear all option in the form of a cross at the right side of the bar to reset the graph if the user wants to start over or visualize a different set of states.
   </p>
-  
-  <h2>Considered Alternatives</h2>
   <p>
     We considered various alternatives for visual encodings, including area and stacked line charts. However, we decided against these to prevent individual state data visualization or a subset of states,. Our priority was to maintain the clarity of individual state trends while allowing for comparisons with other states.
   </p>
