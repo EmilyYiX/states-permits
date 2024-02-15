@@ -235,12 +235,12 @@ onMount(() => {
   
   <h2>Rationale for Design Decisions</h2>
   <p>
-    Our design decisions were guided by the goal to provide a clear and comparative view. A multi-line chart was chosen for its representation of time series data, which helps in learning trends over time. The distinct lines for each state allow for quick visual differentiation and comparison.
+    Our design decisions were guided by the goal to provide a clear and comparative view. A multi-line chart was chosen for its representation of time series data, which helps in learning trends over time. The distinct lines for each state allow for quick visual differentiation and comparison. The x-axis shows the timeline in years from 1999 to 2023. The y-axis displays the number of permits issued with the intervals being of 50,000 each.
   </p>
   <p>
-    A hover tooltip was implemented to provided detailed information: as the state name, year, and number of permits issued. Looking at the data values and the possibility of having multiple lines at once on the graph, we decided to make the hovered line bold and turn red. This was done to help focus on the state that the user wants to examine and compare with other states on the graph.
+    A hover tooltip was implemented to provided detailed information: as the state name, year, and number of permits issued. Looking at the data values and the possibility of having multiple lines at once on the graph, we decided to make the hovered line bold and turn red. This was done to help focus on the state that the user wants to examine and compare with other states on the graph. This hover tooltip was implemented in a way that it is not necessary for the user to put the cursor exactly on the line as that can be cumbersome. Instead, the implementation is such that it calculates the nearest point on the nearest line on the graph. Then it highlights that state red and displays the information close to the cursor for easy reading. In the background, if more states are present, those states become a lighter shade compared to the highlighted state to facilitate easy comparison. Also, when the cursor is not on the graph, all lines are represented a pallete of blue to distinguish different states.
   <p>
-    The multi-select feature allows users to customize the data displayed by selecting all or either a subset of the states that the user wants to visualize. This approach was favored over checkboxes, as we thought it is easier to type in or select a state in a search bar than going through a long list of checkboxes and clicking of small boxes to choose or remove.
+    The multi-select feature allows users to customize the data displayed by selecting all or either a subset of the states that the user wants to visualize. This approach was favored over checkboxes, as we thought it is easier to type in or select a state in a search bar than going through a long list of checkboxes and clicking of small boxes to choose or remove. The multiselct bar shows all the states in alphabetical order and when selected shows them side by side on the bar itself with a remove option on it.
   </p>
   
   <h2>Considered Alternatives</h2>
