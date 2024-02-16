@@ -32,18 +32,18 @@
     .domain(d3.extent(data, (d) => d.date))
     .range([marginLeft, width - marginRight]);
 
-  $: y = d3
-    .scaleLinear()
-    .domain([0, 600000])
-    .nice()
-    .range([height - marginBottom, marginTop]);
-
   $: line = d3
     .line()
     .x((d) => x(d.date))
     .y((d) => y(d.permit));
 
   $: filtered = data.filter(function(d){ return selected.includes(d.state) })
+
+  $: y = d3
+    .scaleLinear()
+    .domain([0, d3.max(filtered, (d) => d.permit)])
+    .nice()
+    .range([height - marginBottom, marginTop]);
 
   $: dataByStates = d3.group(
       filtered, 

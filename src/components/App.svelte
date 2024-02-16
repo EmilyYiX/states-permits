@@ -17,7 +17,7 @@
             data.push({
                 date: new Date(Date.UTC(arr[0], arr[1] - 1)),
                 state: d["state"],
-                permit: d["permit"],
+                permit: parseInt(d["permit"]),
             });
         });
         data = data;
