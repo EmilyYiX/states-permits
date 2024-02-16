@@ -41,7 +41,8 @@
 
   $: y = d3
     .scaleLinear()
-    .domain([0, d3.max(filtered, (d) => d.permit)])
+    // .domain([0, d3.max(filtered, (d) => d.permit)])
+    .domain([0, 600000])
     .nice()
     .range([height - marginBottom, marginTop]);
 
